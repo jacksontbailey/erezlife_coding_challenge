@@ -5,6 +5,19 @@ from core.challenges.question_4.shape_classes.square import Square
 from core.challenges.question_4.shape_classes.triangle import Triangle
 
 def process_shapes(input_filename, output_filename):
+    """
+    Reads shape data from the input CSV file, calculates the perimeter and area for each shape,
+    and writes the results to the output CSV file.
+
+    Args:
+        input_filename (str): Path to the input CSV file containing shape data.
+        output_filename (str): Path to the output CSV file where results will be written.
+
+    Raises:
+        FileNotFoundError: If the input CSV file is not found.
+        Exception: For other unexpected errors during processing.
+    """
+    
     results = []
     try:
         with open(input_filename, 'r+') as file:
