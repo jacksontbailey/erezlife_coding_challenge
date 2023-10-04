@@ -1,6 +1,5 @@
 import os
 import psycopg2
-import random
 from core.challenges.question_1.dummy_data_generator import DummyDataGenerator
 from dotenv import load_dotenv, find_dotenv
 

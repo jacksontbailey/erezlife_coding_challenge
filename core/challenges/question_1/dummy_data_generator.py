@@ -55,7 +55,7 @@ class DummyDataGenerator:
         at_least_one_zero_application = False  # Flag to track if at least one student has 0 applications
 
         for student_id, _, _ in students:
-            num_applications = random.randint(0, 5)  # Random number of applications (between 0 and 5)
+            num_applications = random.randint(0, 50)  # Random number of applications (between 0 and 50)
 
             if num_applications == 0 and not at_least_one_zero_application:
                 at_least_one_zero_application = True  # Set the flag to True for the first student with 0 applications
