@@ -1,5 +1,5 @@
 import math
-from shape_classes.shape import Shape
+from core.challenges.question_4.shape_classes.shape import Shape
 
 class Circle(Shape):
     def __init__(self, radius):
