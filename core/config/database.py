@@ -1,6 +1,6 @@
 import os
 import psycopg2
-from os.path import join, dirname
+from core.challenges.question_1.dummy_data_generator import DummyDataGenerator
 from dotenv import load_dotenv, find_dotenv
 
 class DatabaseConfig:
@@ -15,7 +15,11 @@ class DatabaseConfig:
         __init__(dotenv_file): Initializes the DatabaseConfig object with the path to the .env file.
         _get_env_variable(variable_name): Private method to retrieve environment variables from the .env file.
         create_tables(): Creates 'student' and 'application' tables in the specified PostgreSQL database.
+        add_dummy_data(num_students=5, num_applications_per_student=3): 
+            Adds dummy student and application data to the database.
+
     """
+
 
     def __init__(self):
         """
@@ -37,6 +41,7 @@ class DatabaseConfig:
             'port': self._get_env_variable("database_port")
         }
 
+
     def _get_env_variable(self, variable_name):
         """
         Private method to retrieve environment variables from the .env file.
@@ -48,6 +53,7 @@ class DatabaseConfig:
             str: Value of the environment variable.
         """
         return os.getenv(variable_name)
+
 
     def create_tables(self):
         """
@@ -83,5 +89,43 @@ class DatabaseConfig:
         except psycopg2.Error as e:
             print("Error: Unable to create tables.")
             print(e)
+
+
+    def add_dummy_data(self, num_students=5, num_applications_per_student=3):
+        """
+        Add dummy student and application data to the database.
+
+        Args:
+            num_students (int): Number of students to generate. Defaults to 5.
+            num_applications_per_student (int): Number of applications to generate per student. Defaults to 3.
+        """
+        # Generate dummy data
+        data_generator = DummyDataGenerator(num_students, num_applications_per_student)
+        students = data_generator.generate_students()
+        applications = data_generator.generate_applications(students)
+
+        try:
+            # Establish a connection to the database
+            with psycopg2.connect(**self.db_params) as connection:
+                with connection.cursor() as cursor:
+                    # Insert student data into the student table
+                    cursor.executemany(
+                        'INSERT INTO student (id, name, address) VALUES (%s, %s, %s)',
+                        students
+                    )
+
+                    # Insert application data into the application table
+                    cursor.executemany(
+                        'INSERT INTO application (id, student_id, score) VALUES (%s, %s, %s)',
+                        applications
+                    )
+
+                    print(f"Added {num_students} students and their applications to the database.")
+
+        except psycopg2.Error as e:
+            print("Error: Unable to add dummy data to the database.")
+            print(e)
+
+
 
 DB_SETTING = DatabaseConfig()
