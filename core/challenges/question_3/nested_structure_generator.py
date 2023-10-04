@@ -1,4 +1,14 @@
 def generate_nested_structure(letters, index=0):
+    """
+    Recursively generates a nested structure of HTML-like tags based on the given array of letters.
+    
+    Args:
+        letters (list): List of letters to be nested in the structure.
+        index (int, optional): Current index in the letters array. Used for recursion. Defaults to 0.
+        
+    Returns:
+        str: Nested structure of HTML-like tags with proper indentation.
+    """
     if index >= len(letters):
         return ""
 
