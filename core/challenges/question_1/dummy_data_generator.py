@@ -8,25 +8,22 @@ class DummyDataGenerator:
 
     Attributes:
         num_students (int): Number of students to generate.
-        num_applications_per_student (int): Number of applications to generate per student.
 
     Methods:
-        __init__(num_students, num_applications_per_student): Initializes the DummyDataGenerator object.
+        __init__(num_students): Initializes the DummyDataGenerator object.
         generate_students(): Generates dummy student data with unique IDs, names, and addresses.
         generate_applications(students): Generates dummy application data for the given list of students.
     """
     
-    def __init__(self, num_students, num_applications_per_student):
+    def __init__(self, num_students):
         """
         Initializes the DummyDataGenerator object with the specified parameters.
 
         Args:
             num_students (int): Number of students to generate.
-            num_applications_per_student (int): Number of applications to generate per student.
         """
         self.fake = Faker()
         self.num_students = num_students
-        self.num_applications_per_student = num_applications_per_student
 
 
     def generate_students(self):
@@ -55,20 +52,35 @@ class DummyDataGenerator:
             list: A list of tuples containing (application_id, student_id, score).
         """
         applications = []
+        at_least_one_zero_application = False  # Flag to track if at least one student has 0 applications
+
         for student_id, _, _ in students:
-            for _ in range(self.num_applications_per_student):
+            num_applications = random.randint(0, 5)  # Random number of applications (between 0 and 5)
+
+            if num_applications == 0 and not at_least_one_zero_application:
+                at_least_one_zero_application = True  # Set the flag to True for the first student with 0 applications
+                break
+
+            for _ in range(num_applications):
                 application_id = len(applications) + 1
                 score = random.randint(1, 100)  # Random score between 1 and 100
                 applications.append((application_id, student_id, score))
+
+        # If no student had 0 applications, add an application with 0 applications for a random student
+        if not at_least_one_zero_application and students:
+            student_id = random.choice(students)[0]
+
+            # Remove all tuples with the selected student_id from applications list
+            applications = [app for app in applications if app[1] != student_id]
+
         return applications
 
 # Example usage
 if __name__ == "__main__":
     num_students = 5  # Number of students
-    num_applications_per_student = 3  # Number of applications per student
 
     # Create an instance of DummyDataGenerator
-    data_generator = DummyDataGenerator(num_students, num_applications_per_student)
+    data_generator = DummyDataGenerator(num_students)
 
     # Generate dummy student data
     students = data_generator.generate_students()
