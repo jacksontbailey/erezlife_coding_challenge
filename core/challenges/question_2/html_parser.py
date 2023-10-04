@@ -1,10 +1,39 @@
 class HTMLParser:
+    """
+    Class for parsing raw HTML strings and generating properly formatted output.
+
+    Attributes:
+        stack (list): Stack to keep track of opening and closing tags.
+        output (list): List to store formatted HTML lines.
+        current_indentation (int): Current level of indentation for formatting output.
+
+    Methods:
+        __init__(): Initializes an HTMLParser object with an empty stack, output, and current_indentation.
+        parse_html(raw_html): Parses the raw HTML string and generates formatted output.
+        _parse_tag(raw_html, start_index): Private method to parse a tag (opening or closing) in the raw HTML string.
+        _parse_opening_tag(raw_html, start_index): Private method to parse an opening tag and update stack and output.
+        _parse_closing_tag(raw_html, start_index): Private method to parse a closing tag and update stack and output.
+        _extract_tag_name(raw_html, start_index): Private method to extract tag name from the raw HTML string.
+    """
     def __init__(self):
+        """
+        Initializes an HTMLParser object with an empty stack, output, and current_indentation.
+        """
         self.stack = []
         self.output = []
         self.current_indentation = 0
 
     def parse_html(self, raw_html):
+        """
+        Parses the raw HTML string and generates properly formatted output.
+
+        Args:
+            raw_html (str): Raw HTML string to be parsed.
+
+        Returns:
+            str: Formatted HTML output.
+        """
+
         i = 0
         while i < len(raw_html):
             if raw_html[i] == '<':
@@ -18,6 +47,16 @@ class HTMLParser:
 
 
     def _parse_tag(self, raw_html, start_index):
+        """
+        Private method to parse a tag (opening or closing) in the raw HTML string.
+
+        Args:
+            raw_html (str): Raw HTML string.
+            start_index (int): Starting index of the tag in the raw HTML string.
+
+        Returns:
+            int: Updated index after parsing the tag.
+        """
         if raw_html[start_index + 1] == '/':
             return self._parse_closing_tag(raw_html, start_index + 2)
         else:
@@ -25,6 +64,16 @@ class HTMLParser:
 
 
     def _parse_opening_tag(self, raw_html, start_index):
+        """
+        Private method to parse an opening tag and update stack and output.
+
+        Args:
+            raw_html (str): Raw HTML string.
+            start_index (int): Starting index of the opening tag in the raw HTML string.
+
+        Returns:
+            int: Updated index after parsing the opening tag.
+        """
         tag_name, end_index = self._extract_tag_name(raw_html, start_index)
         if not tag_name:
             return end_index
@@ -35,6 +84,16 @@ class HTMLParser:
 
 
     def _parse_closing_tag(self, raw_html, start_index):
+        """
+        Private method to parse a closing tag and update stack and output.
+
+        Args:
+            raw_html (str): Raw HTML string.
+            start_index (int): Starting index of the closing tag in the raw HTML string.
+
+        Returns:
+            int: Updated index after parsing the closing tag.
+        """
         tag_name, end_index = self._extract_tag_name(raw_html, start_index)
         if not tag_name:
             return end_index
@@ -48,6 +107,17 @@ class HTMLParser:
 
 
     def _extract_tag_name(self, raw_html, start_index):
+        """
+        Private method to extract tag name from the raw HTML string.
+
+        Args:
+            raw_html (str): Raw HTML string.
+            start_index (int): Starting index of the tag in the raw HTML string.
+
+        Returns:
+            str: Extracted tag name.
+            int: Updated index after extracting the tag name.
+        """
         tag_name = ''
         i = start_index
         while i < len(raw_html) and raw_html[i] not in ['>', ' ', '/']:
