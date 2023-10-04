@@ -8,10 +8,62 @@ from core.challenges.question_1.student_applications import get_student_applicat
 
 
 class QuestionHandler:
+    """
+    The QuestionHandler class provides a menu-driven interface for handling different questions.
+    It allows the user to select and execute specific questions related to database operations, HTML parsing,
+    nested structure generation, and file processing.
+
+    Attributes:
+        db_setting (DatabaseConfig): An instance of the DatabaseConfig class for handling database configurations.
+
+    Methods:
+        _get_choice_input(options, prompt):
+            Internal method to get user input from a given set of options. Returns the selected option.
+
+        run_question_1():
+            Executes question 1: Allows the user to delete tables or create dataset and tables in the database.
+
+        run_question_2():
+            Executes question 2: Allows the user to parse HTML code or input custom HTML code for parsing.
+
+        run_question_3():
+            Executes question 3: Allows the user to use default or custom letters to generate a nested structure.
+
+        run_question_4():
+            Executes question 4: Processes shapes data from a CSV file and outputs the results to another CSV file.
+
+        handle_questions():
+            Provides a menu-driven interface to handle different questions based on user input.
+
+    Usage:
+        handler = QuestionHandler()
+        handler.handle_questions()
+
+    Note:
+        Ensure that appropriate modules and classes are imported before using the QuestionHandler class.
+    """
+
     def __init__(self):
+        """
+        Initializes the QuestionHandler class with a DatabaseConfig instance.
+        """
         self.db_setting = DatabaseConfig()
 
+
     def _get_choice_input(self, options, prompt):
+        """
+        Get user choice from a set of options.
+
+        Args:
+            options (dict): Dictionary of valid choices and their descriptions.
+            prompt (str): Prompt message to display.
+
+        Returns:
+            str: Selected option.
+
+        Note:
+            Handles 'quit', 'go back', and 'custom' internally.
+        """
         while True:
             print(prompt)
             for key, value in options.items():
@@ -24,7 +76,11 @@ class QuestionHandler:
             else:
                 return selected_option  # Return the selected option if not 'quit', 'go back', or 'custom'
 
+
     def run_question_1(self):
+        """
+        Executes question 2: Allows the user to parse HTML code or input custom HTML code for parsing.
+        """
         action_options = {
             '1': 'delete tables',
             '2': 'create dataset and tables',
@@ -56,7 +112,11 @@ class QuestionHandler:
             else:
                 print("\nInvalid choice. Please select a valid option.")
 
+
     def run_question_2(self):
+        """
+        Executes question 2: Allows the user to parse HTML code or input custom HTML code for parsing.
+        """
         html_options = {
             '1': 'html1',
             '2': 'html2',
@@ -89,7 +149,11 @@ class QuestionHandler:
             else:
                 print("\nInvalid choice. Please select a valid option.")
 
+
     def run_question_3(self):
+        """
+        Executes question 3: Allows the user to use default or custom letters to generate a nested structure.
+        """
         use_default = {
             '1': 'yes',
             '2': 'no',
@@ -116,13 +180,21 @@ class QuestionHandler:
             nested_structure = generate_nested_structure(letters)
             print(nested_structure)
 
+
     def run_question_4(self):
+        """
+        Executes question 4: Processes shapes data from a CSV file and outputs the results to another CSV file.
+        """
         file_location = "core\\challenges\\question_4"
         input_file = f"{file_location}\\shapes.csv"
         output_file = f"{file_location}\\output.csv"
         process_shapes(input_file, output_file)
 
+
     def handle_questions(self):
+        """
+        Provides a menu-driven interface to handle different questions based on user input.
+        """
         action_options = {
             '1': 'question 1',
             '2': 'question 2',
