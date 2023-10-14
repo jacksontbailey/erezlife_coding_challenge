@@ -66,6 +66,7 @@ class QuestionHandler:
         """
         while True:
             print(prompt)
+            print(f"option type is: {type(options)}, options are: {options}")
             for key, value in options.items():
                 print(f"{key}: {value}")
             user_choice = pyip.inputChoice(list(options.keys()), prompt='\nEnter the number, letter, or option: ')
@@ -158,24 +159,27 @@ class QuestionHandler:
             '1': 'yes',
             '2': 'no',
             'b': 'go back',
-            'q': 'quit'
+            'q': 'quit',
         }
 
         print("\nDefault letters are: ['a', 'b', 'c', 'd', 'e', 'f']")
         while True:
-            use_default = self._get_choice_input(use_default, prompt='\nDo you want to use the default list of letters? (yes or no): ')            
+            option = self._get_choice_input(use_default, prompt='\nDo you want to use the default list of letters? (yes or no): ')            
 
-            if use_default == 'yes':
-                letters = ['a', 'b', 'c', 'd', 'e', 'f']
-            elif use_default.lower() == 'quit':
-                print("Exiting the program. Goodbye!")
-                exit()
-            elif use_default.lower() == 'go back':
+            if option == 'go back':
                 break
-            else:
+            elif option == 'quit':
+                print("\nExiting the program. Goodbye!")
+                exit()
+
+            elif option == 'yes':
+                letters = ['a', 'b', 'c', 'd', 'e', 'f']
+            elif option == 'no':
                 custom_letters = pyip.inputStr(prompt='\nEnter your list of letters: ')
                 # Remove non-letter characters and spaces using regular expression
                 letters = re.sub(r'[^a-zA-Z]', '', custom_letters)
+            else:
+                print("\nInvalid choice. Please select a valid option.")
 
             nested_structure = generate_nested_structure(letters)
             print(nested_structure)
